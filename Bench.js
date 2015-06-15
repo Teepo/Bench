@@ -12,7 +12,6 @@ Bench = function() {
     this.funcs = [];
 
     this.executions = [];
-    this.report = [];
 
     this.avg = [];
 
@@ -53,7 +52,30 @@ Bench = function() {
             i++;
         }
 
+        console.log(this.executions);
+
+        this.drawChart();
+
         this.report();
+    };
+
+    this.drawChart = function() {
+
+        var metadata = {
+            chart: {
+                type: 'area'
+            },
+            series: []
+        };
+
+        var data = [];
+
+        for (var x = 0; x < this.executions.length; x++)
+            data.push({'data' : this.executions[x]});
+
+        metadata['series'] = data;
+
+        $('#chart').highcharts(metadata);
     };
 
     this.report = function() {
@@ -124,8 +146,7 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('body').html('<div class="lol"></div>');
-            $('body').html('');
+            $('body').append('<div class="lol"></div>');
 
             i++;
         }
@@ -142,9 +163,6 @@ window.addEventListener('load', function() {
 
             var body = document.getElementsByTagName('body')[0];
 
-            body.appendChild(div);
-
-            body.innerHTML = "";
             i++;
         }
     });
@@ -154,7 +172,7 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('<div></div>').addClass('lol').appendTo('body');
+            $('<div></div>').addClass('lol');
             i++;
         }
     });
@@ -164,7 +182,7 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('<div class="lol"></div>').appendTo('body');
+            $('<div class="lol"></div>');
             i++;
         }
     });
