@@ -1,14 +1,9 @@
-var Bench = {};
-
-Bench = function() {
-
-    var self = this;
+var Bench = (function() {
 
     this.config = {
         iteration : 10
     };
 
-    this.self = this;
     this.funcs = [];
 
     this.executions = [];
@@ -22,12 +17,13 @@ Bench = function() {
     this.max_value = null;
 
     this.add = function(func) {
+
         this.funcs.push(func);
     };
 
     this.process = function(config) {
 
-        this.config = extend({}, this.config, config);
+        this.config = $.extend(this.config, config);
 
         var i = 0;
 
@@ -57,25 +53,22 @@ Bench = function() {
         this.drawChart();
 
         this.report();
+
     };
 
     this.drawChart = function() {
 
-        var metadata = {
-            chart: {
-                type: 'area'
-            },
-            series: []
-        };
-
         var data = [];
-
         for (var x = 0; x < this.executions.length; x++)
             data.push({'data' : this.executions[x]});
 
-        metadata['series'] = data;
+        $('#chart').highcharts({
+            'chart' : {
+                'type' : 'area'
+            },
+            series : data
+        });
 
-        $('#chart').highcharts(metadata);
     };
 
     this.report = function() {
@@ -125,9 +118,9 @@ Bench = function() {
         for (var i = 0; i < this.executions.length; i++)
         {
             var opt = null;
-            if (i == self.min_test)
+            if (i == this.min_test)
                 opt = "color:#fff;background-color:rgb(40, 163, 40);";
-            if (i == self.max_test)
+            if (i == this.max_test)
                 opt = "color:#fff;background-color:tomato;";
 
             console.log(
@@ -136,9 +129,10 @@ Bench = function() {
             );
         };
     };
-};
+});
 
-window.addEventListener('load', function() {
+$(document).ready(function() {
+
     var test = new Bench();
 
     test.add(function() {
@@ -146,10 +140,12 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('body').append('<div class="lol"></div>');
+            $('#log').append('<div class="lol"></div>');
 
             i++;
         }
+
+        $('#log').html('');
     });
 
     test.add(function() {
@@ -161,10 +157,12 @@ window.addEventListener('load', function() {
             var div = document.createElement('div');
             div.classList.add('lol');
 
-            var body = document.getElementsByTagName('body')[0];
+            document.getElementById('log').appendChild(div);
 
             i++;
         }
+
+        document.getElementById('log').innerHTML = "";
     });
 
     test.add(function() {
@@ -172,9 +170,11 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('<div></div>').addClass('lol');
+            $('<div></div>').addClass('lol').appendTo('#log');
             i++;
         }
+
+        $('#log').html('');
     });
 
     test.add(function() {
@@ -182,13 +182,17 @@ window.addEventListener('load', function() {
         var i = 0;
         while(i <= 100)
         {
-            $('<div class="lol"></div>');
+            var div = $('<div class="lol"></div>');
+            $('#log').append(div);
+
             i++;
         }
+
+        $('#log').html('');
     });
 
 
     test.process({
-        iteration: 234
+        iteration: 10
     });
 });
