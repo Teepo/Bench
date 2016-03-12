@@ -193,6 +193,6 @@ $(document).ready(function() {
 
 
     test.process({
-        iteration: 10
+        iteration: 250
     });
 });
