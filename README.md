@@ -1,6 +1,14 @@
 # Bench
 > Script to visualize the execution time between each function.
 
+## Installation
+
+```js
+npm install
+npm run start
+```
+Run your favorite browser and go to http://localhost:3000
+
 ## Getting started
 
 ```js
