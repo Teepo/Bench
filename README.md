@@ -35,10 +35,6 @@ test.process({
 
 # Examples
 
-See it "test.js" files.
-
-We create 4 tests, we make a <lol> tag, and we append it in the DOM. After we empty it.
-
 ```js
 var test = new Bench();
 
