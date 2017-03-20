@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bench.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Bench.html">Bench</a><ul class='methods'><li data-type='method'><a href="Bench.html#add">add</a></li><li data-type='method'><a href="Bench.html#drawChart">drawChart</a></li><li data-type='method'><a href="Bench.html#process">process</a></li><li data-type='method'><a href="Bench.html#report">report</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Bench.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-env jquery */
+
+/**
+ *
+ * @class
+ */
+export class Bench {
+
+    constructor() {
+
+        this.config = {
+            iteration : 10
+        };
+
+        this.functions = [];
+
+        this.executions = [];
+
+        this.avg = [];
+
+        this.min_test  = null;
+        this.min_value = null;
+
+        this.max_test  = null;
+        this.max_value = null;
+    }
+
+    /**
+     * @description Add function to bench into the pool
+     *
+     * @param {Function} fct
+     *
+     */
+    add(fct) {
+
+        this.functions.push(fct);
+    }
+
+    /**
+     * @description Run all pool functions
+     *
+     * @param {Object} config
+     *
+     */
+    process(config) {
+
+        this.config = $.extend(this.config, config);
+
+        let i = 0;
+
+        while (i &lt; this.config.iteration)
+        {
+            for (let x = 0; x &lt; this.functions.length; x++)
+            {
+
+                let t0 = performance.now();
+
+                this.functions[x]();
+
+                let t1 = performance.now();
+
+                if (this.executions[x] == null)
+                    this.executions[x] = [];
+                if (this.executions[x][i] == null)
+                    this.executions[x][i] = [];
+
+                this.executions[x][i] = t1 - t0;
+            }
+
+            i++;
+        }
+
+        console.log(this.executions);
+
+        this.drawChart();
+
+        this.report();
+    }
+
+    /**
+     * @description Draw Googlechart to summarize report
+     *
+     */
+    drawChart() {
+
+        let data = [];
+        for (let x = 0; x &lt; this.executions.length; x++)
+            data.push({'data' : this.executions[x]});
+
+        $('#chart').highcharts({
+            'chart' : {
+                'type' : 'area'
+            },
+            series : data
+        });
+    }
+
+    /**
+     * @description Summarize pool execution
+     *
+     */
+    report() {
+
+        for (let x = 0; x &lt; this.executions.length; x++)
+        {
+            // save best and worst test.
+            for (let i = 0; i &lt; this.executions[x].length; i++)
+            {
+                let ms = this.executions[x][i];
+
+                // init min &amp; max value
+                if (this.min_value === null)
+                {
+                    this.min_value = ms;
+                    this.min_test = x;
+                }
+
+                if (this.max_value === null)
+                {
+                    this.max_value = ms;
+                    this.max_test = x;
+                }
+
+                // search min &amp; max value
+                if (ms &lt; this.min_value)
+                {
+                    this.min_value = ms;
+                    this.min_test = x;
+                }
+
+                if (ms > this.max_value)
+                {
+                    this.max_value = ms;
+                    this.max_test = x;
+                }
+
+                if (this.avg[x] === null)
+                    this.avg[x] = 0;
+
+                this.avg[x] += ms;
+            }
+        }
+
+        for (let i = 0; i &lt; this.executions.length; i++)
+        {
+            let opt = null;
+
+            if (i == this.min_test)
+                opt = "color:#fff;background-color:rgb(40, 163, 40);";
+            if (i == this.max_test)
+                opt = "color:#fff;background-color:tomato;";
+
+            console.log(
+                "%cLe Test %d a mis en moyenne %f ms sur un panel de %f essais, pour un total de %f ms d'executions.",
+                opt, i, (this.avg[i] / this.config.iteration), this.config.iteration, this.avg[i]
+            );
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Mar 20 2017 23:23:21 GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

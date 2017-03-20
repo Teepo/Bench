@@ -1,41 +1,63 @@
-var Bench = (function() {
+/* eslint-env jquery */
 
-    this.config = {
-        iteration : 10
-    };
+/**
+ *
+ * @class
+ */
+export class Bench {
 
-    this.funcs = [];
+    constructor() {
 
-    this.executions = [];
+        this.config = {
+            iteration : 10
+        };
 
-    this.avg = [];
+        this.functions = [];
 
-    this.min_test = null;
-    this.min_value = null;
+        this.executions = [];
 
-    this.max_test = null;
-    this.max_value = null;
+        this.avg = [];
 
-    this.add = function(func) {
+        this.min_test  = null;
+        this.min_value = null;
 
-        this.funcs.push(func);
-    };
+        this.max_test  = null;
+        this.max_value = null;
+    }
 
-    this.process = function(config) {
+    /**
+     * @description Add function to bench into the pool
+     *
+     * @param {Function} fct
+     *
+     */
+    add(fct) {
+
+        this.functions.push(fct);
+    }
+
+    /**
+     * @description Run all pool functions
+     *
+     * @param {Object} config
+     *
+     */
+    process(config) {
 
         this.config = $.extend(this.config, config);
 
-        var i = 0;
+        let i = 0;
 
-        while(i < this.config.iteration) {
+        while (i < this.config.iteration)
+        {
+            for (let x = 0; x < this.functions.length; x++)
+            {
 
-            for (var x = 0; x < this.funcs.length; x++) {
+                let t0 = performance.now();
 
-                var t0 = performance.now();
+                this.functions[x]();
 
-                this.funcs[x]();
-
-                var t1 = performance.now();
+                let t1 = performance.now();
 
                 if (this.executions[x] == null)
                     this.executions[x] = [];
@@ -53,13 +75,16 @@ var Bench = (function() {
         this.drawChart();
 
         this.report();
+    }
 
-    };
+    /**
+     * @description Draw Googlechart to summarize report
+     *
+     */
+    drawChart() {
 
-    this.drawChart = function() {
-
-        var data = [];
-        for (var x = 0; x < this.executions.length; x++)
+        let data = [];
+        for (let x = 0; x < this.executions.length; x++)
             data.push({'data' : this.executions[x]});
 
         $('#chart').highcharts({
@@ -68,28 +93,29 @@ var Bench = (function() {
             },
             series : data
         });
+    }
 
-    };
+    /**
+     * @description Summarize pool execution
+     *
+     */
+    report() {
 
-    this.report = function() {
-
-        var str = [];
-        for (var x = 0; x < this.executions.length; x++)
+        for (let x = 0; x < this.executions.length; x++)
         {
-            var sum = 0;
-
             // save best and worst test.
-            for (var i = 0; i < this.executions[x].length; i++)
+            for (let i = 0; i < this.executions[x].length; i++)
             {
-                var ms = this.executions[x][i];
+                let ms = this.executions[x][i];
 
                 // init min & max value
-                if (this.min_value == null)
+                if (this.min_value === null)
                 {
                     this.min_value = ms;
                     this.min_test = x;
                 }
-                if (this.max_value == null)
+
+                if (this.max_value === null)
                 {
                     this.max_value = ms;
                     this.max_test = x;
@@ -98,26 +124,27 @@ var Bench = (function() {
                 // search min & max value
                 if (ms < this.min_value)
                 {
-                    this.min_value = ms
+                    this.min_value = ms;
                     this.min_test = x;
                 }
+
                 if (ms > this.max_value)
                 {
-                    this.max_value = ms
+                    this.max_value = ms;
                     this.max_test = x;
                 }
 
-                if (this.avg[x] == null)
+                if (this.avg[x] === null)
                     this.avg[x] = 0;
 
                 this.avg[x] += ms;
             }
         }
 
-        delete i;
-        for (var i = 0; i < this.executions.length; i++)
+        for (let i = 0; i < this.executions.length; i++)
         {
-            var opt = null;
+            let opt = null;
+
             if (i == this.min_test)
                 opt = "color:#fff;background-color:rgb(40, 163, 40);";
             if (i == this.max_test)
@@ -127,6 +154,6 @@ var Bench = (function() {
                 "%cLe Test %d a mis en moyenne %f ms sur un panel de %f essais, pour un total de %f ms d'executions.",
                 opt, i, (this.avg[i] / this.config.iteration), this.config.iteration, this.avg[i]
             );
-        };
-    };
-});
+        }
+    }
+}

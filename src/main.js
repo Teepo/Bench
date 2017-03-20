@@ -1,11 +1,15 @@
-$(document).ready(function() {
+/* eslint-env jquery */
 
-    var test = new Bench();
+import { Bench } from './Bench.js';
 
-    test.add(function() {
+document.addEventListener('DOMContentLoaded', () => {
 
-        var i = 0;
-        while(i <= 100)
+    var test = new Bench;
+
+    test.add(() => {
+
+        let i = 0;
+        while (i <= 100)
         {
             $('#log').append('<div class="lol"></div>');
 
@@ -15,13 +19,13 @@ $(document).ready(function() {
         $('#log').html('');
     });
 
-    test.add(function() {
+    test.add(() => {
 
-        var i = 0;
+        let i = 0;
 
-        while(i <= 100)
+        while (i <= 100)
         {
-            var div = document.createElement('div');
+            let div = document.createElement('div');
             div.classList.add('lol');
 
             document.getElementById('log').appendChild(div);
@@ -32,10 +36,10 @@ $(document).ready(function() {
         document.getElementById('log').innerHTML = "";
     });
 
-    test.add(function() {
+    test.add(() => {
 
-        var i = 0;
-        while(i <= 100)
+        let i = 0;
+        while (i <= 100)
         {
             $('<div></div>').addClass('lol').appendTo('#log');
             i++;
@@ -44,12 +48,12 @@ $(document).ready(function() {
         $('#log').html('');
     });
 
-    test.add(function() {
+    test.add(() => {
 
-        var i = 0;
-        while(i <= 100)
+        let i = 0;
+        while (i <= 100)
         {
-            var div = $('<div class="lol"></div>');
+            let div = $('<div class="lol"></div>');
             $('#log').append(div);
 
             i++;
@@ -57,7 +61,6 @@ $(document).ready(function() {
 
         $('#log').html('');
     });
-
 
     test.process({
         iteration: 250
