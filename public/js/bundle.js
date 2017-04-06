@@ -262,7 +262,7 @@ var Bench =
 	                        this.max_test = x;
 	                    }
 
-	                    if (this.avg[x] === null) this.avg[x] = 0;
+	                    if (this.avg[x] === undefined) this.avg[x] = 0;
 
 	                    this.avg[x] += ms;
 	                }
