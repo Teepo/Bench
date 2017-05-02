@@ -1,10 +1,12 @@
 /* eslint-env jquery */
 
+"use strict";
+
 import { Bench } from './Bench.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    var test = new Bench;
+    var test = new Bench();
 
     test.add(() => {
 

@@ -1,7 +1,7 @@
 {
     "scripts": {
         "start": "npm run js_maker & npm run server",
-        "server": "./node_modules/serve/bin/serve ./public/",
+        "server": "./node_modules/serve/bin/serve.js ./public/",
         "js_maker": "webpack --progress --colors --watch --debug",
         "jsdoc": "./node_modules/jsdoc/jsdoc.js -c ./.jsdoc.json"
     },

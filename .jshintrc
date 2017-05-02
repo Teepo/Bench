@@ -1,0 +1,7 @@
+{
+    "browser"   : true,
+    "node"      : true,
+    "strict"    : true,
+    "jquery"    : true,
+    "esversion" : 6
+}

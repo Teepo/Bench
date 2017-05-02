@@ -59,10 +59,15 @@ export class Bench {
 
                 let t1 = performance.now();
 
-                if (this.executions[x] == null)
+                if (this.executions[x] === null)
+                {
                     this.executions[x] = [];
-                if (this.executions[x][i] == null)
+                }
+
+                if (this.executions[x][i] === null)
+                {
                     this.executions[x][i] = [];
+                }
 
                 this.executions[x][i] = t1 - t0;
             }
@@ -83,9 +88,12 @@ export class Bench {
      */
     drawChart() {
 
-        let data = [];
+        const data = [];
+
         for (let x = 0; x < this.executions.length; x++)
+        {
             data.push({'data' : this.executions[x]});
+        }
 
         $('#chart').highcharts({
             'chart' : {
@@ -135,7 +143,9 @@ export class Bench {
                 }
 
                 if (this.avg[x] === undefined)
+                {
                     this.avg[x] = 0;
+                }
 
                 this.avg[x] += ms;
             }
@@ -145,10 +155,15 @@ export class Bench {
         {
             let opt = null;
 
-            if (i == this.min_test)
+            if (i === this.min_test)
+            {
                 opt = "color:#fff;background-color:rgb(40, 163, 40);";
-            if (i == this.max_test)
+            }
+
+            if (i === this.max_test)
+            {
                 opt = "color:#fff;background-color:tomato;";
+            }
 
             console.log(
                 "%cLe Test %d a mis en moyenne %f ms sur un panel de %f essais, pour un total de %f ms d'executions.",

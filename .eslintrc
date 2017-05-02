@@ -1,14 +1,16 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es6": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
+        "ecmaVersion": 6,
         "sourceType": "module"
     },
     "rules": {
+        "eqeqeq": 2,
+        "curly": 2,
         "no-console": [
             0
         ],

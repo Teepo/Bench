@@ -1,16 +1,13 @@
 module.exports = {
     entry : './src/main.js',
     output: {
-        path: './public/js',
+        path: __dirname + '/public/js',
         filename: 'bundle.js',
         library: 'Bench'
     },
 
     resolve: {
-        extensions: [
-            "",
-            ".js"
-        ]
+        extensions: [".js"]
     },
 
     module: {
@@ -18,7 +15,7 @@ module.exports = {
             {
                 test : /\.js?/,
                 exclude: /node_modules/,
-                loader : 'babel',
+                loader : 'babel-loader',
                 query: {
                     presets: ['es2015']
                 }
