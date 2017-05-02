@@ -2,7 +2,7 @@
 
 "use strict";
 
-import { Bench } from './Bench.js';
+import Bench from './../lib/Bench.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 

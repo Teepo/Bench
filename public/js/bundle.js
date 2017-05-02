@@ -74,10 +74,6 @@ var Bench =
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -88,7 +84,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * @class
  */
-var Bench = exports.Bench = function () {
+var Bench = function () {
     function Bench() {
         _classCallCheck(this, Bench);
 
@@ -118,7 +114,7 @@ var Bench = exports.Bench = function () {
 
 
     _createClass(Bench, [{
-        key: 'add',
+        key: "add",
         value: function add(fct) {
 
             this.functions.push(fct);
@@ -132,7 +128,7 @@ var Bench = exports.Bench = function () {
          */
 
     }, {
-        key: 'process',
+        key: "process",
         value: function process(config) {
 
             this.config = $.extend(this.config, config);
@@ -148,11 +144,11 @@ var Bench = exports.Bench = function () {
 
                     var t1 = performance.now();
 
-                    if (this.executions[x] === null) {
+                    if (typeof this.executions[x] === "undefined") {
                         this.executions[x] = [];
                     }
 
-                    if (this.executions[x][i] === null) {
+                    if (typeof this.executions[x][i] === "undefined") {
                         this.executions[x][i] = [];
                     }
 
@@ -175,7 +171,7 @@ var Bench = exports.Bench = function () {
          */
 
     }, {
-        key: 'drawChart',
+        key: "drawChart",
         value: function drawChart() {
 
             var data = [];
@@ -198,7 +194,7 @@ var Bench = exports.Bench = function () {
          */
 
     }, {
-        key: 'report',
+        key: "report",
         value: function report() {
 
             for (var x = 0; x < this.executions.length; x++) {
@@ -255,6 +251,8 @@ var Bench = exports.Bench = function () {
     return Bench;
 }();
 
+module.exports = Bench;
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -266,9 +264,13 @@ var Bench = exports.Bench = function () {
 
 var _Bench = __webpack_require__(0);
 
+var _Bench2 = _interopRequireDefault(_Bench);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    var test = new _Bench.Bench();
+    var test = new _Bench2.default();
 
     test.add(function () {
 
